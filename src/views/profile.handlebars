@@ -1,17 +1,23 @@
 <h1 class="text-body-secondary">Your Profile</h1>
 <p>Welcome <b>{{data.firstName}} {{data.lastName}}</b>
-<input type="image" src="http://localhost:8080/images/edit.png" data-bs-toggle="modal" data-bs-target="#editModal" height="15" width="15" alt="edit name"/>
+<input type="image" src="../images/edit.png" data-bs-toggle="modal" data-bs-target="#editModal" height="15" width="15" alt="edit name"/>
 </p>
 <p>Email: <b>{{data.email}}</b></p>
 <p>User Permission: <b>{{data.rol}}</b></p>
+{{#if data.isPending}}
+<p>
+    User Status: <b>{{data.status}}</b>
+    <input type="image" src="../images/edit.png" data-bs-toggle="modal" data-bs-target="#uploadDocuments" height="15" width="15" alt="upload documents to be premium"/>
+</p>
+{{/if}} 
 <div>
     {{#if data.avatar}}
     <input type="image" class="col-3" src={{data.avatar}} data-bs-toggle="modal" data-bs-target="#editAvatar" alt="profile picture of: {{data.firstName}} {{data.lastName}}"/>
     {{else}}
-    <input type="image" class="col-3" src="http://localhost:8080/images/avatar.png" data-bs-toggle="modal" data-bs-target="#editAvatar" alt="profile picture of: {{data.firstName}} {{data.lastName}}"/>
+    <input type="image" class="col-3" src="../images/avatar.png" data-bs-toggle="modal" data-bs-target="#editAvatar" alt="profile picture of: {{data.firstName}} {{data.lastName}}"/>
     {{/if}}
 </div>
-<a href="/api/sessions/logout">Sign Off</a>
+<a href="./api/sessions/logout">Sign Off</a>
 
 
 <!-- Modal Edit Name-->
@@ -73,5 +79,41 @@
     </div>
 </div>
 <!-- Cierro Modal Edit Avatar-->
+
+<!-- Modal Modal Upload Documentos to be Premium-->
+<div class="modal fade" id="uploadDocuments" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Uploading Documents</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        Please attach the following documents required to be premium.
+        </div>
+        <div class="modal-footer">
+        <form method="post" action="./api/users/{{data.id}}/documents" enctype="multipart/form-data">
+            <div>
+                <label for="identificacion">Identification: </label>
+                <input type="file" name="identificacion" />
+            </div>
+            <div>
+                <label for="domicilio">Address: </label>
+                <input type="file" name="domicilio" />
+            </div>
+            <div>
+                <label for="estadoDeCuenta">Statement of account: </label>
+                <input type="file" name="estadoDeCuenta" />
+            </div>
+            <br>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+<!-- Cierro Modal Upload Documentos to be Premium-->
 
 

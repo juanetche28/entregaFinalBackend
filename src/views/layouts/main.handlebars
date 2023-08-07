@@ -8,7 +8,7 @@
   </head>
   <body class="p-3 mb-2 bg-colorGama-1">
     <div className="container-fluid">
-      <Link className="navbar-brand" to="/"><img src="http://localhost:8080/images/logo.png" alt="logo Aromas en el Alma" width=60rem/></Link>
+      <Link className="navbar-brand" to="/"><img src="https://i.ibb.co/BtcnSvV/logo.png" alt="logo Aromas en el Alma" width=60rem/></Link>
       <button class= "buttonMenu" style = "display: inline">
         <span></span>
         <span></span>
@@ -67,16 +67,21 @@
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="/editProducts">Edit Products</a></li>
         <li><a class="dropdown-item" href="/editUsers">Edit Users</a></li>
+        <li><a class="dropdown-item" href="/addProducts">Add Products</a></li>
+        <li><a class="dropdown-item" href="/deleteInactiveUsers">Delete inactive Users</a></li>
       </ul>
       {{/if}}
       {{#if data.isPremium}} 
-      <button class= "visible buttonMenu">
+      <button class="buttonMenu dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Premium Actions
         <span></span>
         <span></span>
         <span></span>
         <span></span>
-        <a class="aMenu" href="/profile">Premium Actions</a>
       </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/addProducts">Add Products</a></li>
+      </ul>
       {{/if}}
       {{#if data.isAdmin}}
       {{else}}
@@ -87,7 +92,14 @@
         <span></span>
         <a class="aMenu" href="/api/carts/myCart">Cart</a>
       </button>
-      {{/if}} 
+      {{/if}}
+      <button class= "visible buttonMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <a class="aMenu" href="/chat">Chat</a>
+      </button> 
     </div>
       {{{body}}}
 

@@ -2,15 +2,23 @@ import { UserManager } from "../dao/index.js";
 import { userModel } from "../dao/models/user.model.js"
 import {transporter} from "../utils/email.js"
 import __dirname from "../utils.js";
+import UserDTO from '../dto/User.dto.js'; // Lo uso para no mostrar toda la info de los usuarios en /api/users/
+
 
 const userManager = new UserManager();
+
 
 // GetUserController deberá listar todos los usuaros de la base en La ruta raíz GET /users
 
 const GetUser = async (req, res) => {
-    const users = await userManager.getUsers();
-      res.status(201).send({status: "Ok", payload: users})
-    // }
+  const users = await userManager.getUsers();
+  const usersList = [];
+
+  for(let i=0; i<users.docs.length;i++){
+    var userDto = UserDTO.getUserTokenFrom(users.docs[i]);
+    usersList.push(userDto)
+  }
+  res.status(201).send({status: "Ok", payload: usersList})
 };
 
 
@@ -27,7 +35,7 @@ const GetUserById = async (req, res) => {
       const userFind = await userManager.getUserById(JSON.parse(uid));
       res.status(201).send({status: "Ok", payload: userFind});
     } else {
-      res.status(404).send({status: "Error", payload: `User with id ${uid} not found`});
+      res.status(404).send({status: "Error", payload: `User with id ${uid} not found.`});
     }
 };
 
@@ -40,7 +48,7 @@ const changeName = async (req, res) => {
     lastName: req.body.lastName
   }
   if (!dataToUpdate.firstName || !dataToUpdate.lastName) {
-    res.status(404).send({status: "Error", payload: `Please don't leave fields blank.`});
+    res.status(404).send({status: "Error", payload: `Please don't leave fields blank. `});
   } else {
     const user = await userModel.find().lean()
     const userWithSameId = user.some((u) => {
@@ -48,10 +56,10 @@ const changeName = async (req, res) => {
     });
     if (userWithSameId) {
       userManager.updateUser(JSON.parse(uid), dataToUpdate); 
-      res.status(201).redirect("/profile") 
+      res.status(201).redirect("./profile") 
       // res.status(201).send({status: "Ok", payload:  `User with id ${uid} updated`});
     } else {
-      res.status(404).send({status: "Error", payload: `User with id ${uid} not found`});
+      res.status(404).send({status: "Error", payload: `User with id ${uid} not found.`});
     } 
   }
 };
@@ -65,16 +73,16 @@ const changeAvatar = async (req, res) => {
     if(user){
       const profile = req.file || null;
       if(profile){
-        user.avatar = ("http://localhost:8080/images/usersMulter/" + profile.filename);
+        user.avatar = ("../images/usersMulter/" + profile.filename);
         const userUpdated = await userModel.findByIdAndUpdate(user._id,user);
-        res.status(201).redirect("/profile") 
+        res.status(201).redirect("./profile") 
         // res.json({status:"success", message:"Updated avatar"});
-      } else {res.json({status:"error", message:"It isn't possible to upload the avatar. profile image wasn't found "})}
+      } else {res.json({status:"error", message:'It isnt possible to upload the avatar. profile image wasnt found.'})}
     } else {
-      res.json({status:"error", message:"It isn't possible to upload the avatar. User wasn't found "})
+      res.json({status:"error", message:'It isnt possible to upload the avatar. User wasnt found.'})
     }
   } catch (error) {
-      res.json({status:"error", message:"Error loading pictures."})
+      res.json({status:"error", message:'Error loading pictures.'})
   }
 }
 
@@ -89,9 +97,9 @@ const DeleteUser = async (req, res) => {
     });
     if (userWithSameId) {
       userManager.deleteUser(JSON.parse(uid))
-      res.status(201).send({status: "Ok", payload: `The User with id ${uid} was successfully Deleted`});
+      res.status(201).send({status: "Ok", payload: `The User with id ${uid} was successfully Deleted.`});
     } else {
-      res.status(404).send({status: "Error", payload: `User with id ${uid} not found`});
+      res.status(404).send({status: "Error", payload: `User with id ${uid} not found.`});
     }
 };
 
@@ -99,7 +107,6 @@ const changeRol = async (req, res) => {
   const uid = JSON.stringify(req.params.uid);
   const userFind = await userManager.getUserById(JSON.parse(uid));
   var user = await userModel.find().lean()
-  console.log("user Find: ",userFind)
   const userExist = user.some((u) => {
     return JSON.stringify(u._id) === uid;
   });
@@ -110,21 +117,21 @@ const changeRol = async (req, res) => {
     if (rol === "premium") {
       const dataToUpdate = {rol: "user"};
       userManager.updateUser(JSON.parse(uid), dataToUpdate);  
-      res.status(201).send({status: "Ok", payload: `The User with email ${email}, now has rol: ${dataToUpdate.rol}`});
+      res.status(201).send({status: "Ok", payload: `The User with email ${email}, now has rol: ${dataToUpdate.rol}.`});
     } else if (rol === "user") {
       const dataToUpdate = {rol: "premium"};
       // if(user.documents.length<3 && user.status !== "complete")
       if(status !== "complete"){
-        return res.json({status:"error", message:"The user hasn't uploaded all the documents"});
+        return res.json({status:"error", message:'The user hasnt uploaded all the documents. <a href="/">Home</a>'});
       } else {
         userManager.updateUser(JSON.parse(uid), dataToUpdate);  
-        res.status(201).send({status: "Ok", payload: `The User with email ${email}, now has rol: ${dataToUpdate.rol}`});
+        res.status(201).send({status: "Ok", payload: `The User with email ${email}, now has rol: ${dataToUpdate.rol}.`});
       }
     } else {
       res.status(404).send({status: "Error", payload: `You cannot change the role of an admin user.`});
     }
   } else { 
-    res.status(404).send({status: "Error", payload: `User with id ${uid} not found`});
+    res.status(404).send({status: "Error", payload: `User with id ${uid} not found.`});
   }
 }
 
@@ -150,17 +157,16 @@ const uploaderDocuments = async (req, res) => {
         if(docs.length === 3){
             user.status = "complete";
         } else {
-            user.status = "incomplete";
+            user.status = "pending";
         }
         user.documents = docs;
         const userUpdated = await userModel.findByIdAndUpdate(user._id,user);
-        res.json({status:"success", message:"Updated documents"});
-
+        res.status(201).redirect("/profile")
     } else {
-        res.json({status:"error", message:"It isn't possible to upload the documents."})
+        res.json({status:"error", message:'It isnt possible to upload the documents. <a href="/">Home</a>'})
     }
   } catch (error) {
-      res.json({status:"error", message:"Error loading documents."})
+      res.json({status:"error", message:'Error loading documents. <a href="/">Home</a>'})
   }
 }
 
@@ -170,7 +176,7 @@ const deleteInactiveUsers = async (req, res) => {
   const dateToday = new Date();
   for (let step = 0; step < usersLenght; step++) {
     if (users[step].last_connection === null) {
-      return res.status(404).send({status: "Error", payload: `User Number: ${step} and mail: ${users[step].email} Never LogIn`});
+      return res.status(404).send({status: "Error", payload: `User Number: ${step} and mail: ${users[step].email} Never LogIn.`});
     } else {
       let inactiveDays = Math.floor((dateToday.getTime() - users[step].last_connection.getTime())/1000/60/60);  // Obtenego los dias y lo redondeo para abajo
       if (inactiveDays < 1) {
@@ -200,7 +206,7 @@ const deleteInactiveUsers = async (req, res) => {
       }  
     }
   }
-  res.send("Inactive Users deleted");
+  res.send('Inactive Users deleted. <a href="/">Home</a>');
 }
 
 

@@ -52,7 +52,7 @@ const GetProductByIdController = async (req, res) => {
 // NewProductController deberá agregar un nuevo producto en La ruta raíz POST /
 
 const NewProductController = async (req, res) => {
-    const { title, description, code, price, status, stock, category, thumbnail} = req.body;
+    const { title, description, code, price, status, stock, category} = req.body;
     const newProduct = req.body;
     
     // Muestro error si esta duplicado el CODE
@@ -62,10 +62,18 @@ const NewProductController = async (req, res) => {
     });
     const owner = req.user.email;
     if (productWithSameCode) {
-      res.status(404).send({status: "Error", payload: `Product with the same existing code: ${newProduct.code}`});
+      res.status(404).send({status: "Error", payload: `Product with the same existing code: ${newProduct.code}.`});
     } else {
-      productManager.addProduct(title, description, code, price, status, stock, category, thumbnail, owner);
-      res.status(201).send({status: "Ok", payload: `The product with code ${newProduct.code} was successfully added`});
+      const productImage = req.file || null;
+      if(productImage){
+        const thumbnail = ("../images/productsMulter/" + productImage.filename);
+        productManager.addProduct(title, description, code, price, status, stock, category, thumbnail, owner);
+        res.status(201).send({status: "Ok", payload: `The product with code ${newProduct.code} was successfully added.`});
+      } else {
+        const thumbnail = null
+        productManager.addProduct(title, description, code, price, status, stock, category, thumbnail, owner);
+        res.status(201).send({status: "Ok", payload: `The product with code ${newProduct.code} was successfully added.`});
+      }
     }
 };
 
@@ -84,9 +92,9 @@ const UpdateProductController = async (req, res) => {
     });
     if (productWithSameId) {
       productManager.updateProduct(JSON.parse(pid), dataToUpdate);
-      res.status(201).send({status: "Ok", payload: `The product with id ${pid} was successfully updated`});
+      res.status(201).send({status: "Ok", payload: `The product with id ${pid} was successfully updated.`});
     } else {
-      res.status(404).send({status: "Error", payload: `Product with id ${pid} not found`});
+      res.status(404).send({status: "Error", payload: `Product with id ${pid} not found.`});
     }
   }
 };
@@ -133,7 +141,7 @@ const DeleteProductController = async (req, res) => {
           ]
           });
         }
-        res.status(201).send({status: "Ok", payload: `The product with id ${pid} was successfully Deleted`});
+        res.status(201).send({status: "Ok", payload: `The product with id ${pid} was successfully Deleted.`});
       } else {
         res.status(404).send({status: "Error", payload: `You do not have permissions to delete products that are not yours.`});
       }
@@ -173,7 +181,7 @@ const deleteProductPremium = async (req, res) => { // Envio un mail avisando que
     ]
     });
   }
-  res.status(201).send("Product deleted")  
+  res.status(201).send('Product deleted. <a href="/">Home</a>')  
 }
 
 export default {

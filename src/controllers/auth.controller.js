@@ -91,7 +91,6 @@ const logoutSessionController = (req,res)=>{
                 const userUpdated = await userModel.findByIdAndUpdate(user._id,user);
                 const data = {userExist: false};
                 res.render("message", {data, message: 'Goodbye! I hope to see you later.'});
-
             })
         }
     })

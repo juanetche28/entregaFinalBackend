@@ -1,0 +1,58 @@
+<div>  
+  <div class="col-xs-12">
+    <div class="d-flex justify-content-center">
+      <h1 class="text-body-secondary">Delete Inactive Users</h1>
+      <button class= "visible buttonMenu" data-bs-toggle="modal" data-bs-target="#deleteModal">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Delete
+      </button> 
+    </div>
+  </div>
+  <ul>
+    <div class="d-flex flex-wrap align-items-center justify-content-center">
+      {{#each data.users.docs}}
+        <div class="card col-xl-3 col-md-5 col-xs-6 bg-colorGama-2 m-3">
+          <h5><small class="text-body-secondary">{{this.lastName}} {{this.firstName}}</small></h5>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>_id:</b> {{this._id}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>eMail:</b> {{this.email}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Last Connection: </b> {{this.last_connection}}</li></p>
+        </div>
+      {{/each}}
+    </div>
+  </ul>
+  <div>
+    {{#if data.users.hasPrevPage}}
+      <a href="/deleteInactiveUsers/?page={{data.users.prevPage}}">Previous</a>
+    {{/if}}
+
+    <span>Page {{data.users.page}} of {{data.users.totalPages}}</span>
+
+    {{#if data.users.hasNextPage}}
+      <a href="/deleteInactiveUsers/?page={{data.users.nextPage}}">Next</a>
+    {{/if}}
+  </div>
+  <!-- Modal Delete-->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Inactive Users</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Para testear se eliminaran los usuarios loggeados hoy.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <form method="post" action="/api/users/deleteInactive">
+          <button type="submit" class="btn btn-primary">Yes, delete!</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Cierro Modal Delete-->
+</div>

@@ -94,18 +94,18 @@ router.get("/profile",(req,res)=>{
     lastName: req.user.lastName,
     userExist: req.user,
     rol: req.user.rol,
+    status: req.user.status,
     avatar: req.user.avatar,
+    isPending: req.user.status == "pending",
     isAdmin: req.user.rol == "admin",
     isPremium: req.user.rol == "premium",
   };
   res.render("profile", {data});
 });
 
-router.get("/logout",(req,res)=>{
-  const data = {userExist: req.user};
-  res.render("message", {data, message: 'Goodbye! I hope to see you later.'});
+router.get("/message",(req,res)=>{
+  res.render("message", {data, message: 'Thanks for your Purchase!'});
 });
-
 
 router.get("/forgot-password",(req,res)=>{
   const data = {userExist: req.user};
@@ -120,6 +120,10 @@ router.get("/reset-password",(req,res)=>{
 
 router.get("/testing",(req,res)=>{
   res.render("testing");
+});
+
+router.get("/thanks",(req,res)=>{
+  res.render("message", {message: 'Thanks for your Purchase!'});
 });
 
 router.get("/editProducts",checkRole(["admin"]), async (req,res)=>{
@@ -150,5 +154,54 @@ router.get("/editProducts",checkRole(["admin"]), async (req,res)=>{
     res.render("editProducts", {data});  
   }
 });
+
+
+router.get("/addProducts",checkRole(["admin", "premium"]), async (req,res)=>{
+  if (!req.user) {
+    const data = {
+      userExist: false,
+      isAdmin: false,
+      isPremium: false
+    };
+    res.render("addProducts", {data});  
+  } else {
+    const data = {
+      userExist: true,
+      isAdmin: req.user.rol == "admin",
+      isPremium: req.user.rol == "premium"
+    };
+    res.render("addProducts", {data});  
+  }
+});
+
+router.get("/deleteInactiveUsers",checkRole(["admin"]), async (req, res) => {
+  const {page} = req.query;
+  const users = await userModel.paginate(
+    {},
+    {
+      limit: 3,
+      lean: true,
+      page: page ?? 1,
+    }
+    );
+    if (!req.user) {
+      const data = {
+        userExist: false,
+        isAdmin: false,
+        isPremium: false,
+        users,
+      };
+      res.render("deleteInactiveUsers", {data});  
+    } else {
+      const data = {
+        userExist: true,
+        isAdmin: req.user.rol == "admin",
+        isPremium: req.user.rol == "premium",
+        users,
+      };
+      res.render("deleteInactiveUsers", {data});  
+    }
+});
+
 
 export default router;

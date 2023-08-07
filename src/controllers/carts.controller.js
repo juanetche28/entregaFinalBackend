@@ -156,7 +156,7 @@ const updateCartController = async (req, res) => {
     });
     if (cartWithSameId) { // Confirmo que encontre un carrito con el CID especificado
       const cartUpdated = await cartManager.addArrayProducts(JSON.parse(cid), dataToUpdate);
-      res.status(201).send({status: "Ok", payload: `update successfully cart id ${JSON.parse(cid)}`});
+      res.status(201).send({status: "Ok", payload: `update successfully cart id ${JSON.parse(cid)}>`});
     } else {
       res.status(404).send({status: "Error", payload: `Cart with id ${JSON.parse(cid)} not found`});
     }
@@ -250,10 +250,10 @@ const addOneUnitProductController = async (req, res) => {
         res.status(404).send({status: "Error", payload: `Cart with id ${JSON.parse(cid)} it isn't yours.`}); 
       }
     } else {
-        res.status(404).send({status: "Error", payload: `Cart with id ${JSON.parse(cid)} not found`});
+        res.status(404).send({status: "Error", payload: `Cart with id ${JSON.parse(cid)} not found.`});
     }
   } else {
-    res.status(404).send({status: "Error", payload: `Product with id ${pid} not found`});
+    res.status(404).send({status: "Error", payload: `Product with id ${pid} not found.`});
   }
 };
 
@@ -319,7 +319,7 @@ const deleteAllProductsController = async (req, res) => {
       res.status(201).redirect("/")
       // res.status(201).send({status: "Ok", payload: `You successfully removed all products from the cart ${JSON.parse(cid)}`});
     } else {
-      res.status(404).send({status: "Error", payload: `Cart with id ${JSON.parse(cid)} not found`});
+      res.status(404).send({status: "Error", payload: `Cart with id ${JSON.parse(cid)} not found.`});
     }
 };
 
@@ -365,8 +365,7 @@ const purchaseUser = async(req,res)=>{
     ]
     });
     const ticketCreated = await ticketsModel.create(newTicket);
-    res.send(ticketCreated) 
-
+    
     // Genero el pago por stripe
     const paymentInfo = {
       amount:parseInt(purchaseInfo.amount),
@@ -375,8 +374,9 @@ const purchaseUser = async(req,res)=>{
     }
     const service = new PaymentService();
     const paymentIntent = await service.createPaymentIntent(paymentInfo);
+    res.status(201).redirect("/thanks")
   } else {
-    res.status(404).send("First you have to load products to the cart.")
+    res.status(404).send('First you have to load products to the cart. <a href="/">Home</a>')
   }
 };
 

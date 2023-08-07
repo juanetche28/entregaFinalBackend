@@ -25,8 +25,11 @@ router.post("/editName/:uid", checkAuthenticated, usersControll.changeName); // 
 
 router.post("/changeAvatar/:uid", checkAuthenticated, uploaderProfile.single("profile"), usersControll.changeAvatar); // Cambio la foto de perfil del usuario uid
 
-router.put("/:uid/documents", checkAuthenticated , uploaderDocument.fields([{name:"identificacion",maxCount:1}, {name:"domicilio",maxCount:1},{name:"estadoDeCuenta",maxCount:1}]), usersControll.uploaderDocuments)
+router.post("/:uid/documents", checkAuthenticated , uploaderDocument.fields([{name:"identificacion",maxCount:1}, {name:"domicilio",maxCount:1},{name:"estadoDeCuenta",maxCount:1}]), usersControll.uploaderDocuments)
 
 router.delete("/", usersControll.deleteInactiveUsers); // La ruta DELETE /uid deberá eliminar todos los usuarios con mas de 30 dias de inactividad
+
+router.post("/deleteInactive", usersControll.deleteInactiveUsers); // misma funcion que la anterior, creo esto porque en html no acepta el method delete
+
 
 export default router;
