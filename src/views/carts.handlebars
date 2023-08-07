@@ -1,0 +1,32 @@
+<div>
+  <div class="col-xs-12">
+    <div class="d-flex ms-5">
+      <h1 class="text-body-secondary">{{tittle}}</h1>
+      <h1 class="text-body-secondary"></h1>
+    </div>
+  </div>
+  <ul>
+  {{#each carts}}
+    <table class="table-colorGama-1 m-4 table-bordered ">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2" class="text-body-secondary p-1">Cart ID: {{this._id}}</th>
+        </tr>
+        <tr>
+          <th scope="col" colspan="2" class="text-body-secondary p-1">Owner: {{this.owner.email}}</th>
+        </tr>
+        <tr>
+          <th scope="col">Product ID</th>
+          <th scope="col">Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each this.products}}
+          <tr>
+            <td>{{this.pid}}</td>
+            <td>{{this.quantity}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{/each}}

@@ -1,0 +1,264 @@
+paths:
+  /api/products/:limit/:page/:sort/:query/:
+    get:
+      summary: Obtener todos los productos con posibilidad de filtros
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: path
+          required: false
+          description: Limita la cantidad de productos mostrados por pagina. por Default se establece en 10. 
+          schema:
+            $type: number
+        - name: page
+          in: path
+          required: false
+          description: Indica el numero de pagina a mostrar. Por Default es la pagina 1.
+          schema:
+            $type: number
+        - name: sort
+          in: path
+          required: false
+          description: Ordena los productos por el precio de forma ascendente o descendente. Valores admitidos 'asc' y 'desc' 
+          schema:
+            $type: string
+        - name: query
+          in: path
+          required: false
+          description: filtra productos por parametro deseado.  
+          schema:
+            $type: string   
+      responses:
+        "200":
+          description: Todos los productos fueron obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+
+  /api/products/{pid}/:
+    put:
+      summary:  Actualiza los campos de un producto.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: La ruta PUT /:pid deberá tomar un producto y actualizarlo por los campos enviados desde body.
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateProductById"
+      responses:
+        "200":
+          description: Todos los productos fueron Actualizados correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+    get:
+      summary: Obtiene el producto segun el id indicado.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Obtiene el producto segun el pid indicado.
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El producto se Obtuvo Correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Elimina el producto segun el id indicado.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Elimina el producto segun el pid indicado.
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Todos los productos fueron Eliminados correctamente
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+  /api/products/:
+    post:
+      summary: Crear un Producto Nuevo
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/NewProduct"
+      responses:
+        "200":
+          description: Producto creado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+
+
+# Es muy importante respetar los niveles con tab!
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id del producto autogenerada por la base de datos
+        title:
+          type: string
+          description: Nombre del Producto
+        description:
+          type: string
+          description: Detalle del producto. 
+        code:
+          type: string
+          description: Codigo de Referencia del producto. Campo unico, irrepetible 
+        price:
+          type: number
+          description: Precio del Producto
+        status:
+          type: string
+          description: Estado del producto
+        stock:
+          type: number
+          description: Cantidad de productos disponibles
+        category:
+          type: string
+          description: Categoria / Clasificacion del producto. 
+        thumbnail:
+          type: array
+          description: Imagenes del producto. 
+        owner:
+          type: string
+          description: Dueño del producto (Quien lo agrego, registra el mail)
+      example:
+        _id: ObjectId('642f2a524fe33cfe33ac6259')
+        title: Durazno Actualizado
+        description: Esto es un Durazno
+        code: PROD07
+        price: 60
+        status: true
+        stock: 50
+        category: especiales
+        thumbnail: ['Sin Imagen','Sin Imagen2_Actualizado']
+        owner: adminCoder@coder.com
+  requestBodies:
+    UpdateProductById:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del Producto Actualizado
+        description:
+          type: string
+          description: Detalle del producto Actualizado. 
+        price:
+          type: number
+          description: Precio del Producto Actualizado
+        status:
+          type: string
+          description: Estado del producto Actualizado
+        stock:
+          type: number
+          description: Cantidad de productos disponibles Actualizado
+        category:
+          type: string
+          description: Categoria / Clasificacion del producto. 
+        thumbnail:
+          type: array
+          description: Imagenes del producto Actualizadas. 
+      example:
+        title: Durazno Actualizado
+        description: Esto es un Durazno Actualizado
+        price: 60
+        status: true
+        stock: 50
+        category: especiales
+        thumbnail: ['Sin Imagen','Sin Imagen2_Actualizado']
+    NewProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del Producto
+        description:
+          type: string
+          description: Detalle del producto. 
+        code:
+          type: string
+          description: Codigo de Referencia del producto. Campo unico, irrepetible 
+        price:
+          type: number
+          description: Precio del Producto
+        status:
+          type: string
+          description: Estado del producto
+        stock:
+          type: number
+          description: Cantidad de productos disponibles
+        category:
+          type: string
+          description: Categoria / Clasificacion del producto. 
+        thumbnail:
+          type: array
+          description: Imagenes del producto. 
+      example:
+        title: Durazno Actualizado
+        description: Esto es un Durazno
+        code: PROD07
+        price: 60
+        status: true
+        stock: 50
+        category: especiales
+        thumbnail: ['Sin Imagen','Sin Imagen2_Actualizado']
+
+
+

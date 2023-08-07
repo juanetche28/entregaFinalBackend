@@ -1,0 +1,77 @@
+<h1 class="text-body-secondary">Your Profile</h1>
+<p>Welcome <b>{{data.firstName}} {{data.lastName}}</b>
+<input type="image" src="http://localhost:8080/images/edit.png" data-bs-toggle="modal" data-bs-target="#editModal" height="15" width="15" alt="edit name"/>
+</p>
+<p>Email: <b>{{data.email}}</b></p>
+<p>User Permission: <b>{{data.rol}}</b></p>
+<div>
+    {{#if data.avatar}}
+    <input type="image" class="col-3" src={{data.avatar}} data-bs-toggle="modal" data-bs-target="#editAvatar" alt="profile picture of: {{data.firstName}} {{data.lastName}}"/>
+    {{else}}
+    <input type="image" class="col-3" src="http://localhost:8080/images/avatar.png" data-bs-toggle="modal" data-bs-target="#editAvatar" alt="profile picture of: {{data.firstName}} {{data.lastName}}"/>
+    {{/if}}
+</div>
+<a href="/api/sessions/logout">Sign Off</a>
+
+
+<!-- Modal Edit Name-->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Name</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        Please complete all fields. None should be left blank.
+        </div>
+        <div class="modal-footer">
+        <form method="POST" action="/api/users/editName/{{data.id}}">
+            <div>
+                <label for="firstName">First Name:</label>
+                <input type="text" name="firstName" value={{data.firstName}}>
+            </div>
+            <div>
+                <label for="lastName">Last Name: </label>
+                <input type="text" name="lastName" value={{data.lastName}}>
+            </div>
+            <br>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+<!-- Cierro Modal Edit Name-->
+
+<!-- Modal Edit Avatar-->
+<div class="modal fade" id="editAvatar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Editing profile picture</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        Please upload your profile picture.
+        </div>
+        <div class="modal-footer">
+        <form method="post" action="/api/users/changeAvatar/{{data.id}}" enctype="multipart/form-data">
+            <div>
+                <label for="profile">Image: </label>
+                <input type="file" name="profile" />
+            </div>
+            <br>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+<!-- Cierro Modal Edit Avatar-->
+
+

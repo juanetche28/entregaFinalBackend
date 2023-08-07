@@ -1,0 +1,27 @@
+<h1 class="text-body-secondary">Register</h1>
+<div>
+    <form method="post" action="/api/sessions/signup">
+        <input type="text" placeholder="First Name" name="firstName" class="mb-2"/>
+        <br/>
+        <input type="text" placeholder="Last Name" name="lastName" class="mb-2"/>
+        <br/>
+        <input type="text" placeholder="Age" name="age" class="mb-2"/>
+        <br/>
+        <input type="text" placeholder="Email" name="email" class="mb-2"/>
+        <br/>
+        <input type="password" placeholder="Password" name="password" class="mb-2"/>
+        <br/>
+        {{!-- <button type="submit">Registrarse</button> --}}
+        <button type="submit" class= "buttonMenu" style = "display: inline">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Finish
+        </button>
+    </form>
+</div>
+
+<a href="/api/sessions/github">
+    Sign up with Github
+</a>

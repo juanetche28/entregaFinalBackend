@@ -1,0 +1,17 @@
+body{
+background-color: beige;
+}
+#Black {
+  font-weight: bold;
+}
+
+#ulProducts, #liProducts {
+  margin: 1rem;
+}
+
+#pTitle {
+  font-weight: bold;
+  margin: 1rem;
+  padding: 1rem;
+  border-image: initial; border: 1px solid black;
+}

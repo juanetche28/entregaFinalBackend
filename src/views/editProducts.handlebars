@@ -1,0 +1,119 @@
+<div>
+  <div class="col-xs-12">
+    <div class="d-flex justify-content-center">
+      <h1 class="text-body-secondary">List of products</h1>
+    </div>
+  </div>
+  <ul>
+    <div class="d-flex flex-wrap align-items-center justify-content-center">
+      {{#each data.products.docs}}
+        <div class="card col-xl-3 col-md-5 col-xs-6 bg-colorGama-2 m-3">
+          <img src='{{this.thumbnail}}' class="card-img-top" alt='{{this.description}}'>
+          <h5><small class="text-body-secondary">{{this.title}}</small></h5>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Price:</b> $ {{this.price}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Stock:</b> {{this.stock}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>ID:</b> {{this._id}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Code:</b> {{this.code}}</li></p>
+          <div class="container-fluid">
+            <a href="#" class="btn bg-colorGama-6 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#editModal{{this._id}}">Edit</a>
+            <a href="#" class="btn bg-colorGama-6 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#deleteModal{{this._id}}">Delete</a>          
+            <!-- Modal Delete-->
+            <div class="modal fade" id="deleteModal{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Product Code {{this.code}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure to delete this product?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form method="GET" action="/api/products/delete/{{this._id}}">
+                    <button type="submit" class="btn btn-primary">Yes, delete!</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Cierro Modal Delete-->
+            <!-- Modal Edit-->
+            <div class="modal fade" id="editModal{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Product code {{this.code}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Please complete all fields. None should be left blank.
+                  </div>
+                  <div class="modal-footer">
+                    <form id="dataToUpdate" method="POST" action="/api/products/edit/{{this._id}}">
+                      <div>
+                        <label for="title">Title: </label>
+                        <input type="text" name="title" value={{this.title}}>
+                      </div>
+                      <div>
+                        <label for="description">Description: </label>
+                        <input type="text" name="description" value={{this.description}}>
+                      </div>
+                      <div>
+                        <label for="code">Code: </label>
+                        <input type="text" name="code" value={{this.code}}>
+                      </div>
+                      <div>
+                        <label for="price">Price: </label>
+                        <input type="number" name="price" value={{this.price}}>
+                      </div>
+                      <div>
+                        <label for="status">Status: </label>
+                        <input type="text" name="status" value={{this.status}}>
+                      </div>
+                      <div>
+                        <label for="stock">Stock: </label>
+                        <input type="number" name="stock" value={{this.stock}}>
+                      </div>
+                      <div>
+                        <label for="category">Category: </label>
+                        <input type="text" name="category" value={{this.category}}>
+                      </div>
+                      <div>
+                        <label for="owner">Owner: </label>
+                        <input type="text" name="owner" value={{this.owner}}>
+                      </div>
+                      <div>
+                        <label for="thumbnail">Thumbnail: </label>
+                        <input type="text" name="thumbnail" value={{this.thumbnail}}>
+                      </div>
+                      <div>
+                        <br>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Cierro Modal Edit-->
+
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </ul>
+
+  <div>
+    {{#if data.products.hasPrevPage}}
+      <a href="/editProducts/?page={{data.products.prevPage}}">Previous</a>
+    {{/if}}
+
+    <span>Page {{data.products.page}} of {{data.products.totalPages}}</span>
+
+    {{#if data.products.hasNextPage}}
+      <a href="/editProducts/?page={{data.products.nextPage}}">Next</a>
+    {{/if}}
+  </div>
+</div>

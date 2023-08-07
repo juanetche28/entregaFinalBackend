@@ -1,0 +1,85 @@
+<div>  
+  <div class="col-xs-12">
+    <div class="d-flex justify-content-center">
+      <h1 class="text-body-secondary">List of Users</h1>
+    </div>
+  </div>
+  <ul>
+    <div class="d-flex flex-wrap align-items-center justify-content-center">
+      {{#each data.users.docs}}
+        <div class="card col-xl-3 col-md-5 col-xs-6 bg-colorGama-2 m-3">
+          {{#if this.avatar}}
+          <img class="col-5" src={{this.avatar}} alt="profile picture of: {{this.firstName}} {{this.lastName}}">
+          {{else}}
+          <img class="col-5" src="http://localhost:8080/images/avatar.png" alt="profile picture of:  {{this.firstName}} {{this.lastName}}">
+          {{/if}}
+          <h5><small class="text-body-secondary">{{this.lastName}} {{this.firstName}}</small></h5>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>_id:</b> {{this._id}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>eMail:</b> {{this.email}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Rol:</b> {{this.rol}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Age:</b> {{this.age}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Status:</b> {{this.status}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Last Connection: </b> {{this.last_connection}}</li></p>
+          <div class="container-fluid">
+            <a href="#" class="btn bg-colorGama-6 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#editModal{{this._id}}">Edit</a>
+            <a href="#" class="btn bg-colorGama-6 fw-bold text-white" data-bs-toggle="modal" data-bs-target="#deleteModal{{this._id}}">Delete</a>          
+            <!-- Modal Delete-->
+            <div class="modal fade" id="deleteModal{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete User {{this.firstName}} {{this.lastName}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure to delete this User?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form method="GET" action="/api/users/delete/{{this._id}}">
+                    <button type="submit" class="btn btn-primary">Yes, delete!</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Cierro Modal Delete-->
+            <!-- Modal Edit-->
+            <div class="modal fade" id="editModal{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Change Rol of User {{this.firstName}} {{this.lastName}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-footer">
+                    <form method="POST" action="/api/users/premium/{{this._id}}">
+                      <div>
+                        <br>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Change Rol</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Cierro Modal Edit-->
+
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </ul>
+  <div>
+    {{#if data.users.hasPrevPage}}
+      <a href="/editUsers/?page={{data.users.prevPage}}">Previous</a>
+    {{/if}}
+
+    <span>Page {{data.users.page}} of {{data.users.totalPages}}</span>
+
+    {{#if data.users.hasNextPage}}
+      <a href="/editUsers/?page={{data.users.nextPage}}">Next</a>
+    {{/if}}
+  </div>
+</div>

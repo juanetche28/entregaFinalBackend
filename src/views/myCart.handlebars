@@ -1,0 +1,131 @@
+<div>
+  <div class="col-xs-12">
+    <div class="d-flex ms-5">
+      <h1 class="text-body-secondary">{{data.title}} </h1>
+      <h1 class="text-body-secondary"></h1>
+    </div>
+  </div>
+  <ul>
+    <table class="table-colorGama-1 m-4 table-bordered ">
+      <thead>
+        <tr>
+          <th scope="col" colspan="5" class="text-body-secondary p-1">Cart ID: {{data.id}}</th>
+        </tr>
+        <tr>
+          <th scope="col">Product ID </th>
+          <th scope="col">Title </th>
+          <th scope="col">Quantity </th>
+          <th scope="col">Subtotal </th>
+          <th scope="col">Actions </th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data.carts.info}}
+          <tr>
+            <td>{{this.code}}</td>
+            <td>{{this.title}}</td>
+            <td>
+              {{this.quantity}}<input class="ms-2" type="image" src="http://localhost:8080/images/edit.png" data-bs-toggle="modal" data-bs-target="#editModal{{this.code}}" height="15" width="15" alt="edit name"/>
+            </td>
+            <td>{{this.subtotal}}</td>
+            <td>
+            <div class="container">
+              <div class="row">           
+                <form class="m-0 pe-0 col" method="POST" action="/api/carts/product/{{this.pid}}">
+                <button type="submit" class="visible buttonMenu m-0 p-0">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <p class="aMenu m-0 ps-1 pe-1">+</p>
+                </button>
+                </form>
+                <form class="m-0 pe-0 col" method="GET" action="/api/carts/delete/{{../data.id}}/product/{{this.pid}}">
+                <button type="submit" class="visible buttonMenu m-0 me-1 p-0">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <p class="aMenu m-0 ps-1 pe-1">-</p>
+                </button>
+                </form>
+              </div>
+            </div>
+            </td>           
+          </tr>
+
+          <!-- Modal Edit QTY Product-->
+          <div class="modal fade" id="editModal{{this.code}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Editing QTY product {{this.code}}</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Enter the quantity of products.
+                  </div>
+                  <div class="modal-footer">
+                    <form method="post" action="/api/carts/edit/{{../data.id}}/product/{{this.pid}}">
+                      <div>
+                        <label for="firstName">QTY:</label>
+                        <input type="number" name="quantity" value={{this.quantity}}>
+                      </div>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Accept</button>
+                  </form>
+                  </div>
+              </div>
+              </div>
+          </div>
+          <!-- Cierro Modal edit QTY Product-->
+
+        {{/each}}
+      </tbody>
+    </table>
+    {{#if data.carts.amount}}
+    <div class="container">
+      <div class="row col-4"> 
+        <p class="col-4 m-0 pe-0">Total: $ {{data.carts.amount}}</p>
+        <form class="m-0 pe-0 property-start col-8" method="post" action="/api/carts/{{data.id}}/purchase">
+          <button class= "visible buttonMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <p class="aMenu m-0 ps-1 pe-1">Buy this Cart</p>
+          </button>
+        </form>
+      </div>
+    </div>
+    <p type="button" class="col-2">
+      <b>Delete Cart</b> <img type="image" src="http://localhost:8080/images/trash.png" data-bs-toggle="modal" data-bs-target="#deleteCart" height="15" width="15" alt="quit Product"/></button>
+    </p>
+    {{/if}}
+
+    <!-- Modal delete Cart-->
+    <div class="modal fade" id="deleteCart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Deleting Cart {{data.id}}</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Are you sure to delete your cart?
+            </div>
+            <div class="modal-footer">
+            <form method="get" action="/api/carts/delete/{{data.id}}">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Yes, delete</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Cierro Modal delete Cart-->
+</div>
+
+
+

@@ -1,0 +1,23 @@
+<div>
+  <h1>Users</h1>
+  <ul>
+    {{#each users.docs}}
+      <li><b>_id:</b> {{this._id}}</li>
+      <li><b>First Name:</b> {{this.firstName}} - <b>Last Name:</b> {{this.lastName}}</li>
+      <li><b>eMail:</b> {{this.email}}</li>
+      <li><b>Rol:</b> {{this.rol}}</li>
+      <br>
+    {{/each}}
+  </ul>
+  <div>
+    {{#if users.hasPrevPage}}
+      <a href="/api/users?page={{users.prevPage}}">Previous</a>
+    {{/if}}
+
+    <span>Page {{users.page}} of {{users.totalPages}}</span>
+
+    {{#if users.hasNextPage}}
+      <a href="/api/users?page={{users.nextPage}}">Next</a>
+    {{/if}}
+  </div>
+</div>

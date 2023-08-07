@@ -1,0 +1,99 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{tittle}}</title>
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body class="p-3 mb-2 bg-colorGama-1">
+    <div className="container-fluid">
+      <Link className="navbar-brand" to="/"><img src="http://localhost:8080/images/logo.png" alt="logo Aromas en el Alma" width=60rem/></Link>
+      <button class= "buttonMenu" style = "display: inline">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        {{#if data.isAdmin}}
+        <a class="aMenu" href="/editProducts">Home</a>
+        {{else}}
+        <a class="aMenu" href="/">Home</a>
+        {{/if}}
+      </button>
+      {{#if data.userExist}}
+      {{else}} 
+      <button class= "buttonMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <a class="aMenu" href="/login">Sign In</a>
+      </button>
+      {{/if}}
+      {{#if data.userExist}}
+      {{else}}  
+      <button class= "buttonMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <a class="aMenu" href="/signup">Sign Up</a>
+      </button>
+      {{/if}}
+      {{#if data.userExist}} 
+      <button class= "buttonMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <a class="aMenu" href="/profile">Profile</a>
+      </button>
+      <button class= "visible buttonMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <a class="aMenu" href="/api/sessions/logout">Sign Off</a>
+      </button>
+      {{/if}}
+      {{#if data.isAdmin}}
+      <button class="buttonMenu dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Admin Actions
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/editProducts">Edit Products</a></li>
+        <li><a class="dropdown-item" href="/editUsers">Edit Users</a></li>
+      </ul>
+      {{/if}}
+      {{#if data.isPremium}} 
+      <button class= "visible buttonMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <a class="aMenu" href="/profile">Premium Actions</a>
+      </button>
+      {{/if}}
+      {{#if data.isAdmin}}
+      {{else}}
+      <button class= "visible buttonMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <a class="aMenu" href="/api/carts/myCart">Cart</a>
+      </button>
+      {{/if}} 
+    </div>
+      {{{body}}}
+
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+      <script src="../../controllers/auth.controller.js"></script>
+      <script src="../../utils/functions.js"></script>       
+  </body>
+</html>

@@ -1,0 +1,134 @@
+paths:
+  /api/users/:
+    get:
+      summary: /api/users deberá listar todos los usuarios de la base. (solo para rol admin)
+      tags:
+        - Users
+      responses:
+        "200":
+          description: se obtuvieron todos los Usuarios Correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Users'
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+  /api/users/uid/:
+    get:
+      summary: Devuelve toda la informacion del usuario segun el ID indicado. 
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: Especifica el ID del Usuario que queremos buscar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Usuario Encontrado. 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Users'
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Elimina el usuario segun el ID indicado. 
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: Especifica el ID del Usuario que queremos Eliminar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Usuario Eliminado correctamente. 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Users'
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+  /api/users/premium/uid/:
+    get:
+      summary: Debera cambiar de rol "user" a "premium" y viceversa. 
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: Especifica el ID del Usuario al cual le queremos cambiar el rol
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: El rol del usuario ha sido cambiado correctamente.  
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Users'
+        "401":
+          description: Error por falta de permisos
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    Users:
+      type: object
+      properties:
+        firstName:
+          type: String
+          description: Nombre del Usuario
+        lastName: 
+          type: String
+          description: Apellido del Usuario
+        email: 
+          type: String
+          description: Correo Electronico del Usuario
+        age: 
+          type: Number
+          description: Edad del Usuario
+        password: 
+          type: String
+          description: Contraseña del Usuario
+        cart:
+          type: mongoose.Schema.Types.ObjectId
+          description: Carrito de compras del Usuario. ID relacionada al schema cartCollection
+        rol: 
+          type: String
+          description: Los Valores admitidos son User, Admin o Premium 
+      example:
+        _id:  ObjectId('6430c2cc2554a46d2c68001a')
+        firstName: Juan Cruz
+        lastName: Etcheverry
+        email: juanetche28@gmail.com
+        age: 30
+        password: 1234
+        cart:
+        rol: admin
+
+
+
+
+

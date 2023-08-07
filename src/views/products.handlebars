@@ -1,0 +1,44 @@
+<div>
+  <div class="col-xs-12">
+    <div class="d-flex justify-content-center">
+      <h1 class="text-body-secondary">List of products</h1>
+    </div>
+  </div>
+  <ul>
+    <div class="d-flex flex-wrap align-items-center justify-content-center">
+      {{#each data.products.docs}}
+        <div class="card col-xl-3 col-md-5 col-xs-6 bg-colorGama-2 m-3">
+          <img src='{{this.thumbnail}}' class="card-img-top" alt='{{this.description}}'>
+          <h5><small class="text-body-secondary">{{this.title}}</small></h5>
+          {{!-- <h5 class="card-title text-center">{{this.title}}</h5> --}}
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Price:</b> $ {{this.price}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Stock:</b> {{this.stock}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>ID:</b> {{this._id}}</li></p>
+          <p class="card-text p-0 m-0"><li class="ms-4"><b>Code:</b> {{this.code}}</li></p>
+          <p class="card-text p-0 m-0">
+            <form class="m-0 pe-0 col-12" method="POST" action="/api/carts/product/{{this._id}}">
+              <button type="submit" class="col-12 visible buttonMenu m-0 p-0">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <p class="aMenu m-0">Add to the Cart</p>
+              </button>
+            </form>
+          </p>
+        </div>
+      {{/each}}
+    </div>
+  </ul>
+  <div>
+    {{#if data.products.hasPrevPage}}
+      <a href="/?page={{data.products.prevPage}}">Previous</a>
+    {{/if}}
+
+    <span>Page {{data.products.page}} of {{data.products.totalPages}}</span>
+
+    {{#if data.products.hasNextPage}}
+      <a href="/?page={{data.products.nextPage}}">Next</a>
+    {{/if}}
+  </div>
+</div>
