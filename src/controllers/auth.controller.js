@@ -53,13 +53,13 @@ const forgotPasswordController = async (req,res) =>{
 const resetPasswordController = async (req,res) => {
     try {
         const token = req.query.token;
-        const {email, newPassword} = req.body;
+        const {newPassword} = req.body;
         //validamos el token
         const validEmail = verifyEmailToken(token);
         if(!validEmail){
             return res.send(`Link expired. Please Generate a new link to restore your password <a href="/forgot-password" >Restore Password</a>`)
         }
-        const user = await userModel.findOne({email:email});
+        const user = await userModel.findOne({email:validEmail});
         if(!user){
             return res.send("User didn't register")
         }
@@ -70,7 +70,7 @@ const resetPasswordController = async (req,res) => {
             ...user._doc,
             password:createHash(newPassword)
         }
-        const userUpdate = await userModel.findOneAndUpdate({email:email},userData);
+        const userUpdate = await userModel.findOneAndUpdate({email:validEmail},userData);
         res.render("login",{message:"Updated Password"});
     } catch (error) {
         res.send(error.message);

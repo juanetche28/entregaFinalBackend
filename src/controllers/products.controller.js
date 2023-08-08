@@ -124,7 +124,7 @@ const DeleteProductController = async (req, res) => {
           <br>
           <img src="cid:trash"/>
           <br>
-          <a href="http://localhost:8080/">Home</a>
+          <a href="https://entregafinalbackend-production-7c5b.up.railway.app/">Home</a>
           </div>`;
           const contenido = await transporter.sendMail({
           //estructura del correo
@@ -164,7 +164,7 @@ const deleteProductPremium = async (req, res) => { // Envio un mail avisando que
     <br>
     <img src="cid:trash"/>
     <br>
-    <a href="http://localhost:8080/">Home</a>
+    <a href="https://entregafinalbackend-production-7c5b.up.railway.app/">Home</a>
     </div>`;
     const contenido = await transporter.sendMail({
     //estructura del correo

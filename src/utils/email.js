@@ -25,7 +25,7 @@ export {transporter}
 
 //funcion para generar el correo de recuperacion de constraseña
 export const sendRecoveryPass = async(userEmail,token)=>{
-    const link = `http://localhost:8080/reset-password?token=${token}`;//enlace con el token
+    const link = `https://entregafinalbackend-production-7c5b.up.railway.app/reset-password?token=${token}`;//enlace con el token
 
     //estructura del correo
     await transporter.sendMail({

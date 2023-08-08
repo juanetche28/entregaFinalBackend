@@ -348,7 +348,7 @@ const purchaseUser = async(req,res)=>{
     <br>
     <p>Number of order: <b>${newTicket.code}</b></p>
     <p>Purchase Total: <b>$ ${purchaseInfo.amount}</b></p>
-    <a href="http://localhost:8080/">Home</a>
+    <a href="https://entregafinalbackend-production-7c5b.up.railway.app/">Home</a>
     </div>`;
     const contenido = await transporter.sendMail({
     //estructura del correo

@@ -56,7 +56,7 @@ const changeName = async (req, res) => {
     });
     if (userWithSameId) {
       userManager.updateUser(JSON.parse(uid), dataToUpdate); 
-      res.status(201).redirect("./profile") 
+      res.status(201).redirect("/profile") 
       // res.status(201).send({status: "Ok", payload:  `User with id ${uid} updated`});
     } else {
       res.status(404).send({status: "Error", payload: `User with id ${uid} not found.`});
@@ -75,7 +75,7 @@ const changeAvatar = async (req, res) => {
       if(profile){
         user.avatar = ("../images/usersMulter/" + profile.filename);
         const userUpdated = await userModel.findByIdAndUpdate(user._id,user);
-        res.status(201).redirect("./profile") 
+        res.status(201).redirect("/profile") 
         // res.json({status:"success", message:"Updated avatar"});
       } else {res.json({status:"error", message:'It isnt possible to upload the avatar. profile image wasnt found.'})}
     } else {

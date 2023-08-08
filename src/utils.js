@@ -26,9 +26,9 @@ export const generateEmailToken = (email,expireTime)=>{
 export const verifyEmailToken = (token)=>{
     try {
         const info = jwt.verify(token,options.gmail.emailToken);
-        return info.email;
+        const email = info.email
+        return email;
     } catch (error) {
-        console.log(error.message);
         return null;
     }
 };

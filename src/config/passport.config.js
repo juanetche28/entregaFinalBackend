@@ -62,7 +62,7 @@ const initializedPassport = () => {
         {   // Datos de mi propia APP Github
             clientID: "Iv1.0973c48ea89f70ab",  
             clientSecret: "6a55f4aab4d307903beebaa260e6176da4f59181",
-            callbackURL: "http://localhost:8080/api/sessions/github-callback"
+            callbackURL: "https://entregafinalbackend-production-7c5b.up.railway.app/api/sessions/github-callback"
         },
         async(accessToken, refreshToken, profile, done)=>{
             try {
